@@ -10,7 +10,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
-      - run: unzip -q '*.zip'
+      - run: unzip -oq EdgeCombatToggle-v3.zip
       - run: chmod +x gradlew
         working-directory: EdgeCombatToggle
       - run: sed -i '/toolchain/d' build.gradle
