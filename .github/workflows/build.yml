@@ -9,9 +9,11 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 25
       - run: unzip -q '*.zip'
       - run: chmod +x gradlew
+        working-directory: EdgeCombatToggle
+      - run: sed -i '/toolchain/d' build.gradle
         working-directory: EdgeCombatToggle
       - run: ./gradlew build
         working-directory: EdgeCombatToggle
