@@ -1,25 +1,38 @@
-name: Build mod
+name: Build Fabric Mod
+
 on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 25
-      - run: unzip -oq EdgeCombatToggle-v3.zip
-      - run: chmod +x gradlew
-        working-directory: EdgeCombatToggle
-      - run: sed -i '/toolchain/d' build.gradle
-        working-directory: EdgeCombatToggle
-      - run: sed -i '/dependencyResolutionManagement/d' settings.gradle
-        working-directory: EdgeCombatToggle
-      - run: ./gradlew build
-        working-directory: EdgeCombatToggle
-      - uses: actions/upload-artifact@v4
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload Mod Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: edge-combat-toggle-jar
-          path: EdgeCombatToggle/build/libs/*.jar
+          name: Fabric-Mod
+          path: build/libs/*.jar
+          
